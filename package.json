@@ -1,0 +1,14 @@
+{
+  "name": "distribute",
+  "description": "Distribute CSS",
+  "repository": "git://github.com/mndvns/distribute.git <mail@mndvns.com>",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "debug": "^0.8.0",
+    "should": "^3.2.0"
+  }
+}
