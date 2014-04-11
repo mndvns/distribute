@@ -1,25 +1,37 @@
 
-var debug = require('debug')('distribute:test');
+var name = require('../package.json').name;
+var debug = require('debug')(name + ':test');
 var assert = require('assert');
 var should = require('should');
 var path = require('path');
+var fs = require('fs');
 var Lib = require('..');
 
 process.stdout.write('\u001B[2J');
 
-describe('distribute', function(){
+fs.readdirSync('test/fixtures').forEach(function(dir){
 
-  run('Makefile');
-  run('component.json');
-  run('package.json');
+  var names = [
+    'Makefile',
+    'component.json',
+    'package.json'
+  ].map(function(name){
+    return name
+      .replace('\.', '\-')
+      .toLowerCase();
+  }).filter(function(name){
+    return ~dir.indexOf(name);
+  }).map(function(name){
+    return name
+      .replace('\-', '\.');
+  });
 
-  function run(name){
-    it('should load a local ' + name, function(done){
-      var basename = name.split('.')[0].toLowerCase();
+  describe('`' + name + '`', function(){
+    it('should ' + dir, function(done){
       var vars;
       var lib = Lib({
-        lookups: [name],
-        root: __dirname + '/fixtures/' + basename,
+        lookups: names,
+        root: 'test/fixtures/' + dir,
         onFinish: function(){
           vars = this && this.variables;
           should.exist(vars);
@@ -30,6 +42,6 @@ describe('distribute', function(){
         }
       });
     });
-  }
 
+  });
 });
